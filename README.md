@@ -1,6 +1,6 @@
 # hsp-output-elasticsearch
 ### Description
-HSP template for Elasticsearch 
+ESP/HSP template for Elasticsearch 
 
 ### Usage:
 <pre>
