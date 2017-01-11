@@ -1,49 +1,34 @@
 {
-  "template" : "hsp-*",
-  "settings" : {
-    "index.refresh_interval" : "5s",
-    "number_of_shards" : 1,
-    "number_of_replicas" : 0
-  },
-  "mappings" : {
+  "template": "homer*",
+    "mappings" : {
     "_default_" : {
        "_all" : {"enabled" : true, "omit_norms" : true},
-       "dynamic_templates" : [ {
-             "string_fields" : {
-               "match" : "*",
-               "match_mapping_type" : "string",
-               "mapping" : {
-                 "type" : "string", "index" : "analyzed", "omit_norms" : true,
-                   "fields" : {
-                     "raw" : {"type": "string", "index" : "not_analyzed", "ignore_above" : 256}
-                   }
+        "dynamic_templates" : 
+        [ 
+         {
+           "ts_fields" : { 
+             "match" : "timestamp",
+            "mapping" : { "type" : "date" } }
+          }, {
+          "geo_fields" : { 
+            "match" : "*_geo",
+            "mapping": { "type": "geo_point" } }
+          }, {
+          "ip_fields" : { 
+            "match" : "*_ip",
+            "mapping" : { "type" : "ip" } }
+          }, 
+          {
+          "string_fields" : {
+            "match" : "*",
+            "match_mapping_type" : "string",
+            "mapping" : {
+               "type" : "string", "index" : "analyzed", "omit_norms" : true,
+                   "fields" : { "raw" : {"type": "string", "index" : "not_analyzed", "ignore_above" : 256}}
                }
-             }
-       }, {
-          "geo_fields" : {
-            "mapping": {
-              "type": "geo_point"
-            },
-            "match" : "geopoint"
+            }
           }
-       }, {
-          "ts_fields" : {
-            "mapping" : {
-              "type" : "date"
-            },
-            "match" : "ts"
-          }
-       }, {
-          "ip_fields" : {
-            "mapping" : {
-              "type" : "ip"
-            },
-            "match" : "ip"
-          }
-       } ],       
-	 "properties" : {
-         "@version": { "type": "string", "index": "not_analyzed" }
+        ]
        }
     }
-  }
 }
